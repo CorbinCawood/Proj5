@@ -1,15 +1,15 @@
 /*
-*Corbin Cawood, Preston Smith
-*COSC 302
-*23 April 2019
-*Dr. Scott Emrich
-*Project 5: "Word Dice"
-*Description:
-*	This program reads in a file of "Dice" and determines wheter or not
-*specific "words" from a different file can by spelled by rolling the given dice.
-*Edmonds-Karp algorithm was used to accomplish this. Assistance provided by Camille
-*Crumpton (Previous COSC 302 TA).
-*/
+ *Corbin Cawood, Preston Smith
+ *COSC 302
+ *23 April 2019
+ *Dr. Scott Emrich
+ *Project 5: "Word Dice"
+ *Description:
+ *	This program reads in a file of "Dice" and determines wheter or not
+ *specific "words" from a different file can by spelled by rolling the given dice.
+ *Edmonds-Karp algorithm was used to accomplish this. Assistance provided by Camille
+ *Crumpton (Previous COSC 302 TA).
+ */
 
 #include <iostream>
 #include<fstream>
@@ -53,7 +53,7 @@ struct Graph{
 
 int main(int argc, char* argv[]){
 
-	
+
 	string temp;
 	ifstream inFile;
 	vector<string> words;
@@ -99,7 +99,7 @@ int main(int argc, char* argv[]){
 
 		Node* source = new Node;
 		Node* sink = new Node;
-	
+
 		source->id = 0;
 		source->type = SOURCE;
 		source->visited = 0;
@@ -120,7 +120,7 @@ int main(int argc, char* argv[]){
 			letter->visited = 0;
 			letter->letters.resize(26);
 			letter->letters.at(words.at(i).at(j) -65) = 1;
-			
+
 			idIterator++;
 			currentLetters.push_back(letter);
 		}
@@ -175,33 +175,33 @@ int main(int argc, char* argv[]){
 
 		for(j = 0; j < dice.size(); j++){
 			for(l = 0; l < currentLetters.size(); l++){
-			for(k = 0; k < dice.at(j)->letters.size(); k++){
-				if(dice.at(j)->letters.at(k) == 1 && currentLetters.at(l)->letters.at(k) == 1){
+				for(k = 0; k < dice.at(j)->letters.size(); k++){
+					if(dice.at(j)->letters.at(k) == 1 && currentLetters.at(l)->letters.at(k) == 1){
 
-					//If both positions in the "letters" vector
-					//for both dice and currentLetter are 1, then the two nodes
-					//are linked.
+						//If both positions in the "letters" vector
+						//for both dice and currentLetter are 1, then the two nodes
+						//are linked.
 
-					Edge * newEdge = new Edge;
-					Edge * reverseEdge = new Edge;
+						Edge * newEdge = new Edge;
+						Edge * reverseEdge = new Edge;
 
-					newEdge->to = currentLetters.at(l);
-					newEdge->from = dice.at(j);
-					newEdge->original = 1;
-					newEdge->residual = 0;
+						newEdge->to = currentLetters.at(l);
+						newEdge->from = dice.at(j);
+						newEdge->original = 1;
+						newEdge->residual = 0;
 
-					reverseEdge->to = dice.at(j);
-					reverseEdge->from = currentLetters.at(l);
-					reverseEdge->original = 0;
-					reverseEdge->residual = 1;
+						reverseEdge->to = dice.at(j);
+						reverseEdge->from = currentLetters.at(l);
+						reverseEdge->original = 0;
+						reverseEdge->residual = 1;
 
-					newEdge->reverse = reverseEdge;
-					reverseEdge->reverse = newEdge;
+						newEdge->reverse = reverseEdge;
+						reverseEdge->reverse = newEdge;
 
-					dice.at(j)->adj.push_back(newEdge);
-					currentLetters.at(l)->adj.push_back(reverseEdge);
+						dice.at(j)->adj.push_back(newEdge);
+						currentLetters.at(l)->adj.push_back(reverseEdge);
+					}
 				}
-			}
 			}
 		}
 
@@ -234,7 +234,7 @@ int main(int argc, char* argv[]){
 			//and output the spelled word
 
 			for(j = 0; j < wordGraph.spellingIDs.size(); j++){
-				
+
 				if(j != 0){
 					cout << "," << wordGraph.spellingIDs.at(j);
 				}
@@ -255,7 +255,7 @@ int main(int argc, char* argv[]){
 		wordGraph.resetGraph();
 		idIterator = dice.size() + 1;
 		delete sink;
-		
+
 	}
 
 }
@@ -293,8 +293,8 @@ bool Graph::spellCheck(){
 
 		Node *curNode;
 		Edge *curEdge;
-	
-	
+
+
 		//Go to the sink and start from it's backEdge
 
 		vit = nodes.end();
@@ -306,13 +306,13 @@ bool Graph::spellCheck(){
 			//Set curEdge to the curNode's backEdge and reverse its values
 
 			curEdge = curNode->backEdge;
-		
+
 			if(curEdge->original == 1 && curEdge->residual == 0){
 				curEdge->original = 0;
 				curEdge->residual = 1;
 				curEdge->reverse->original = 1;
 				curEdge->reverse->residual = 0;
-				
+
 			}
 			else if(curEdge->original == 0 && curEdge->residual == 1){
 				curEdge->original = 1;
@@ -320,7 +320,7 @@ bool Graph::spellCheck(){
 				curEdge->reverse->original = 0;
 				curEdge->reverse->residual = 1;
 			}
-	
+
 			curNode = curEdge->from;
 		}
 	}
@@ -335,7 +335,7 @@ bool Graph::spellCheck(){
 				return false;
 			}
 			else if(nodes.at(i)->type != SOURCE && nodes.at(i)->adj.at(j)->to->type == DICE && nodes.at(i)->adj.at(j)->original == 1){
-				
+
 				//If a node is connected to the die, and isn't the source node, then push_Back its ID into spelling IDS
 
 				spellingIDs.push_back(nodes.at(i)->adj.at(j)->to->id -1);
